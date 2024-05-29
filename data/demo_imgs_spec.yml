@@ -1,0 +1,4 @@
+tf_train_mnist:latest:
+  cmd: "python3 /app/models/official/vision/image_classification/mnist_main.py --model_dir=./model_dir --data_dir=./data_dir --train_epochs=10 --distribution_strategy=one_device --num_gpus=1 --download"
+  long_running: false # is it like a server which never exits?
+    
