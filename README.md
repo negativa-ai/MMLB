@@ -65,7 +65,7 @@ python main.py --func=vul_analysis \
 
 
 
-## Dependency Graph Analysis
+### Dependency Graph Analysis
 1. Start a container run the following commands.
 ```
 docker run -it --rm  -v /home/ubuntu/repos/MMLB/scripts/:/scripts  -v $PWD:/output tf_train_mnist:latest bash
