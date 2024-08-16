@@ -79,15 +79,16 @@ chmod +x /scripts/show_deps.sh
 
 2. Generate depency graph
 ```
-python main --func=pkg_deps_analysis \
+python main.py --func=pkg_deps_analysis \
    --img_name=tf_train_mnist \
    --debloated_img_name=cimplifier_debloated_tf_train_mnist_latest_bin_python3 \
    --removed_files_path=./debloated_files.csv \
-   --package_path=./tf_train_mnist_packages.csv \
-   --package_files_path=./tf_train_mnist_packages_files.csv \
+   --package_path=./tf_train_mnist_latest_packages.csv \
+   --package_files_path=./tf_train_mnist_latest_packages_files.csv \
    --deps_path=./deps.txt \
    --grype_json_path=./grype.json
 
 ```
-This will generate two depenency graph figures in current forder, named `tf_train_mnist_pip.pdf` and `tf_train_mnist_apt.pdf`.
+This will generate two depenency graph figures in current forder, named `tf_train_mnist_pip.gv.pdf` and `tf_train_mnist_apt.gv.pdf`.
 The former is the dependency graph of the pip packages and the latter is the dependency graph of the apt packages.
+The input and output files of this step can be found in the `example` folder.

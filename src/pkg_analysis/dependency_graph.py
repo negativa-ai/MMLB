@@ -300,12 +300,12 @@ class PipGraphNode(PipPackage):
 
 
 class AptDependencyGraph(DepsGraph):
-    def __init__(self, container_name, pkg_names) -> None:
+    def __init__(self, container_name, direct_accessed_pkgs) -> None:
         """
         pkg_names: a list of direct deps pkg names.
         """
         self.container_name = container_name
-        self.pkg_names = pkg_names
+        self.pkg_names = direct_accessed_pkgs
         self.root_node = AptGraphNode("app")
         self.table = {}
         self.root_node.type = "root"
