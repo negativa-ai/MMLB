@@ -153,7 +153,9 @@ def vul_analysis(
     working_dir = os.path.join(path)
     cc = ContainerCreator(working_dir)
     original_report, cve_by_pkg = cc.analyze_original_container(img_name, cmd)
-    all_pkg_stats["img_name"].extend([f"{k}-{n}" for n in cve_by_pkg["img_name"]])
+    all_pkg_stats["img_name"].extend(
+        [f"{img_name}-{n}" for n in cve_by_pkg["img_name"]]
+    )
     all_pkg_stats["pkg_name"].extend(cve_by_pkg["pkg_name"])
     all_pkg_stats["pkg_type"].extend(cve_by_pkg["pkg_type"])
     all_pkg_stats["severity"].extend(cve_by_pkg["severity"])
@@ -237,6 +239,7 @@ def pkg_deps_analysis(
 
     image = Image(image_name)
     image.analyze(debloated_image_name, pkg_files_df, removed_files_df, pkg_df)
+    image.pkg_bloat_degrees.to_csv("tmp.csv")
 
     def generate_deps_graph(pkg_type):
         """
@@ -244,19 +247,24 @@ def pkg_deps_analysis(
         """
         direct_accessed_pkgs = []
         indices = (
-            image.pkg_bloat_degrees.query(f"package_type=={pkg_type}")
+            image.pkg_bloat_degrees.query(f'package_type=="{pkg_type}"')
             .query("bloat_degree<1")
             .index.tolist()
         )
         for p in indices:
             direct_accessed_pkgs.append((p[0], p[2]))
-        dep_graph = (
-            PipDependencyGraph(deps_content, direct_accessed_pkgs=direct_accessed_pkgs)
-            if pkg_type == "pip"
-            else AptDependencyGraph(
+
+        dep_graph = None
+        if pkg_type == "pip":
+            dep_graph = PipDependencyGraph(
                 deps_content, direct_accessed_pkgs=direct_accessed_pkgs
             )
-        )
+        else:
+            pkg_names = []
+            for i in indices:
+                pkg_names.append(i[0])
+            dep_graph = AptDependencyGraph(image_name, direct_accessed_pkgs=pkg_names)
+
         dep_graph.build(image.pkg_bloat_degrees, grype_json=grype_json_str)
         dep_graph.generate_fig(f"{image_to_filename(image_name)}_{pkg_type}", "./")
 
