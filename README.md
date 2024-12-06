@@ -11,6 +11,7 @@ Other platforms should also work.
 3. `pip install -r requirements.txt`
 4. `cd /path/to/project/`
 5. install Grype: https://github.com/anchore/grype
+6. Also config Cimplifier using modified `runc` for helping strace log automatically, check [here](./external/cimplifier/bare-metal/README.md#using-modified-runc-binary-for-helping-strace-log-automatically) for more details.
 
 ## Test Your Enviroment
 1. `docker pull hfzhang6/tf_train_mnist && docker tag hfzhang6/tf_train_mnist tf_train_mnist`
