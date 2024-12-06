@@ -1,11 +1,6 @@
 # MMLB
 a framework for **M**easuring and analyzing **M**achine **L**earning deployment **B**loat.
 
-NOTICE:
-* More functionalities will be open-sourced.
-* More detailed documentation will be added.
-* We are working with Cimpilifier team to open source Cimplifier.
-
 ## Prerequisite
 The code are tested on Ubuntu 18.04 with a Telsa T4 GPU.
 Other platforms should also work.
@@ -14,14 +9,14 @@ Other platforms should also work.
 1. `conda create -n mmlb python=3.7 -y`
 2. `conda activate mmlb`
 3. `pip install -r requirements.txt`
-4. `export CIMPLIFIER_SLIM_PATH=/path/to/your/climpfier/slim.py && export CIMPLIFIER_IMPORT_PATH=/path/to/your/cimplifier/import.py`
+4. `cd /path/to/project/`
 5. install Grype: https://github.com/anchore/grype
 
 ## Test Your Enviroment
 1. `docker pull hfzhang6/tf_train_mnist && docker tag hfzhang6/tf_train_mnist tf_train_mnist`
 2. `cd /path/to/project/src`
-3. `python main.py --func=debloat --container_spec=../data/demo_imgs_spec.yml --output=../data/demo_debloat_results.csv`
-If everything is set up correctly, a file named `generic_debloat_results.csv` will be created in the `../data` folder. 
+3. `python main.py --func=debloat --container_spec=../example/demo_imgs_spec.yml --output=../example/demo_debloat_results.csv` (This may take a while depending on the container size)
+If everything is set up correctly, a file named `generic_debloat_results.csv` will be created in the `../example` folder. 
 The content is something like:
 ```
 original_image_name,debloated_image_name,original_image_size,debloated_image_size,cmd
@@ -32,10 +27,11 @@ Check the Example section for a quick start.
 
 ## Example:
 ### Debloat a container
-1. `export CIMPLIFIER_SLIM_PATH=/path/to/your/climpfier/slim.py && export CIMPLIFIER_IMPORT_PATH=/path/to/your/cimplifier/import.py`
+1. `cd /path/to/project/`
+1. `PROJECT_PATH=$PWD`
+1. `export CIMPLIFIER_SLIM_PATH=$PROJECT_PATH/external/cimplifier/bare-metal/code/slim.py && export CIMPLIFIER_IMPORT_PATH=$PROJECT_PATH/external/cimplifier/bare-metal/code/import.py`
 1. `docker pull hfzhang6/tf_train_mnist && docker tag hfzhang6/tf_train_mnist tf_train_mnist`
-2. `cd /path/to/project/src`
-3. `python main.py --func=debloat --container_spec=../data/demo_imgs_spec.yml --output=./debloat_results.csv`
+1. `cd $PROJECT_PATH/src && python main.py --func=debloat --container_spec=../example/demo_imgs_spec.yml --output=./debloat_results.csv`
 
 This will generate a file named `debloat_results.csv` and a debloated container named `cimplifier_debloated_tf_train_mnist_latest_bin_python3`.
 
@@ -45,7 +41,7 @@ This will generate a file named `debloat_results.csv` and a debloated container 
 The file `debloated_files.csv` lists the removed files. We will use this file to perform further analysis.
 
 ### Package Level Analysis 
-1. `python main.py --func=pkg_analysis --container_spec=/home/ubuntu/repos/MMLB/data/demo_imgs_spec.yml`
+1. `python main.py --func=pkg_analysis --container_spec=/home/ubuntu/repos/MMLB/example/demo_imgs_spec.yml`
 
 Two files named `tf_train_mnist_packages.csv` and `tf_train_mnist_packages_files.csv` will be created in the current folder.
 
@@ -92,3 +88,17 @@ python main.py --func=pkg_deps_analysis \
 This will generate two depenency graph figures in current forder, named `tf_train_mnist_pip.gv.pdf` and `tf_train_mnist_apt.gv.pdf`.
 The former is the dependency graph of the pip packages and the latter is the dependency graph of the apt packages.
 The input and output files of this step can be found in the `example` folder.
+
+## Cite this work
+```
+@article{zhang2024machine,
+  title={Machine Learning Systems are Bloated and Vulnerable},
+  author={Zhang, Huaifeng and Alhanahnah, Mohannad and Ahmed, Fahmi Abdulqadir and Fatih, Dyako and Leitner, Philipp and Ali-Eldin, Ahmed},
+  journal={Proceedings of the ACM on Measurement and Analysis of Computing Systems},
+  volume={8},
+  number={1},
+  pages={1--30},
+  year={2024},
+  publisher={ACM New York, NY, USA}
+}
+```
