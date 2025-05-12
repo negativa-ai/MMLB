@@ -1,5 +1,3 @@
-**NOTE: This repository is moved to: https://github.com/negativa-ai/MMLB**
-
 # MMLB
 
 a framework for **M**easuring and analyzing **M**achine **L**earning deployment **B**loat.
