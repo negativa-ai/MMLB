@@ -3,7 +3,7 @@
 a framework for **M**easuring and analyzing **M**achine **L**earning deployment **B**loat.
 
 ## Prerequisite
-The code are tested on Ubuntu 18.04 with a Telsa T4 GPU.
+The code was tested on Ubuntu 18.04 with a Telsa T4 GPU.
 Other platforms should also work.
 
 ## Set Up Environment
